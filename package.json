@@ -1,17 +1,22 @@
 {
   "name": "greenmanager-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Este sistema é um portal para usuario encontrarem pontos de despejo de lixos reciclaveis",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Arthue, Jean, Juan, Nicolas",
   "license": "ISC",
   "dependencies": {
     "express": "^4.21.1",
     "nest": "^0.1.6",
+    "sequelize": "^6.37.5",
+    "sqlite3": "^5.1.7",
     "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
   }
 }
