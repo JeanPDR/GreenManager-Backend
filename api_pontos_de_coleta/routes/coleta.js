@@ -2,10 +2,53 @@ const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const router = express.Router();
 
-// Conexão com o banco de dados
 const db = new sqlite3.Database("./db.sqlite");
 
-// Rota para listar todos os pontos de coleta
+/**
+ * @swagger
+ * tags:
+ *   name: Pontos de Coleta
+ *   description: Gerenciamento dos pontos de coleta
+ */
+
+/**
+ * @swagger
+ * /api/pontos:
+ *   get:
+ *     summary: Lista todos os pontos de coleta
+ *     tags: [Pontos de Coleta]
+ *     responses:
+ *       200:
+ *         description: Lista de pontos de coleta
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: ID do ponto de coleta
+ *                   name:
+ *                     type: string
+ *                     description: Nome do ponto de coleta
+ *                   type:
+ *                     type: string
+ *                     description: Tipo do ponto de coleta
+ *                   address:
+ *                     type: string
+ *                     description: Endereço do ponto de coleta
+ *                   cep:
+ *                     type: string
+ *                     description: CEP do ponto de coleta
+ *                   lat:
+ *                     type: number
+ *                     description: Latitude
+ *                   lng:
+ *                     type: number
+ *                     description: Longitude
+ */
 router.get("/", (req, res) => {
   db.all("SELECT * FROM pontos_coleta", [], (err, rows) => {
     if (err) {
@@ -15,7 +58,62 @@ router.get("/", (req, res) => {
   });
 });
 
-// Rota para cadastrar um novo ponto de coleta
+/**
+ * @swagger
+ * /api/pontos:
+ *   post:
+ *     summary: Cadastra um novo ponto de coleta
+ *     tags: [Pontos de Coleta]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - type
+ *               - address
+ *               - cep
+ *               - lat
+ *               - lng
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Nome do ponto de coleta
+ *               type:
+ *                 type: string
+ *                 description: Tipo do ponto de coleta
+ *               address:
+ *                 type: string
+ *                 description: Endereço do ponto de coleta
+ *               cep:
+ *                 type: string
+ *                 description: CEP do ponto de coleta
+ *               lat:
+ *                 type: number
+ *                 description: Latitude
+ *               lng:
+ *                 type: number
+ *                 description: Longitude
+ *               image:
+ *                 type: string
+ *                 description: URL da imagem (opcional)
+ *     responses:
+ *       201:
+ *         description: Ponto de coleta cadastrado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   description: ID do ponto de coleta criado
+ *                 name:
+ *                   type: string
+ *                   description: Nome do ponto de coleta
+ */
 router.post("/", (req, res) => {
   const { name, type, address, cep, lat, lng, image } = req.body;
 
@@ -39,7 +137,54 @@ router.post("/", (req, res) => {
   });
 });
 
-// Rota para atualizar um ponto de coleta
+/**
+ * @swagger
+ * /api/pontos/{id}:
+ *   put:
+ *     summary: Atualiza um ponto de coleta
+ *     tags: [Pontos de Coleta]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do ponto de coleta
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - type
+ *               - address
+ *               - cep
+ *               - lat
+ *               - lng
+ *             properties:
+ *               name:
+ *                 type: string
+ *               type:
+ *                 type: string
+ *               address:
+ *                 type: string
+ *               cep:
+ *                 type: string
+ *               lat:
+ *                 type: number
+ *               lng:
+ *                 type: number
+ *               image:
+ *                 type: string
+ *                 description: URL da imagem (opcional)
+ *     responses:
+ *       200:
+ *         description: Ponto de coleta atualizado com sucesso
+ *       404:
+ *         description: Ponto de coleta não encontrado
+ */
 router.put("/:id", (req, res) => {
   const { id } = req.params;
   const { name, type, address, cep, lat, lng, image } = req.body;
@@ -68,7 +213,25 @@ router.put("/:id", (req, res) => {
   });
 });
 
-// Rota para deletar um ponto de coleta
+/**
+ * @swagger
+ * /api/pontos/{id}:
+ *   delete:
+ *     summary: Deleta um ponto de coleta
+ *     tags: [Pontos de Coleta]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do ponto de coleta
+ *     responses:
+ *       200:
+ *         description: Ponto de coleta deletado com sucesso
+ *       404:
+ *         description: Ponto de coleta não encontrado
+ */
 router.delete("/:id", (req, res) => {
   const { id } = req.params;
 
